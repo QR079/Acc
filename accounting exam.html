@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>اختبار فني محاسبة | المملكة العربية السعودية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-dark: #8B6914;
+    --navy: #0B1F3A;
+    --navy-light: #132D54;
+    --navy-mid: #1A3F6F;
+    --white: #F8F5EE;
+    --gray: #8A9BB0;
+    --success: #2ECC71;
+    --fail: #E74C3C;
+    --shadow: 0 8px 32px rgba(11,31,58,0.25);
+    --radius: 16px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Cairo', 'Tajawal', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background Pattern */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 80%, rgba(201,168,76,0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(26,63,111,0.6) 0%, transparent 50%),
+      repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(201,168,76,0.02) 40px, rgba(201,168,76,0.02) 41px),
+      repeating-linear-gradient(-45deg, transparent, transparent 40px, rgba(201,168,76,0.02) 40px, rgba(201,168,76,0.02) 41px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 20px 16px 40px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Header */
+  .exam-header {
+    text-align: center;
+    padding: 28px 20px 20px;
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    margin-bottom: 28px;
+  }
+
+  .logo-badge {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 14px;
+    font-size: 28px;
+    box-shadow: 0 0 0 4px rgba(201,168,76,0.2), 0 8px 20px rgba(0,0,0,0.3);
+  }
+
+  .exam-header h1 {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--gold);
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+
+  .exam-header p {
+    font-size: 0.85rem;
+    color: var(--gray);
+    font-weight: 400;
+  }
+
+  /* Card */
+  .card {
+    background: linear-gradient(145deg, rgba(19,45,84,0.95), rgba(11,31,58,0.98));
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: var(--radius);
+    padding: 32px 28px;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(12px);
+  }
+
+  /* SCREEN 1: Registration */
+  #screen-register .card-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+
+  #screen-register .card-subtitle {
+    font-size: 0.83rem;
+    color: var(--gray);
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+
+  .form-group {
+    margin-bottom: 18px;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--gold-light);
+    margin-bottom: 8px;
+  }
+
+  .form-group label span.req { color: #e74c3c; margin-right: 2px; }
+
+  .form-group input {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1.5px solid rgba(201,168,76,0.25);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.9rem;
+    color: var(--white);
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    direction: rtl;
+  }
+
+  .form-group input:focus {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.07);
+  }
+
+  .form-group input::placeholder { color: rgba(138,155,176,0.6); }
+
+  .info-box {
+    background: rgba(201,168,76,0.08);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 22px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .info-box .icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+
+  .info-box p { font-size: 0.8rem; color: var(--gray); line-height: 1.6; }
+
+  .info-box p strong { color: var(--gold-light); }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px 28px;
+    border-radius: 10px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    color: var(--navy);
+    width: 100%;
+    font-size: 1rem;
+    padding: 15px;
+  }
+
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(201,168,76,0.35); }
+  .btn-primary:active { transform: translateY(0); }
+
+  .btn-outline {
+    background: transparent;
+    border: 1.5px solid rgba(201,168,76,0.4);
+    color: var(--gold-light);
+    padding: 11px 20px;
+    font-size: 0.85rem;
+  }
+
+  .btn-outline:hover { border-color: var(--gold); background: rgba(201,168,76,0.08); }
+
+  /* SCREEN 2: Exam */
+  #screen-exam { display: none; }
+
+  .progress-bar-wrap {
+    background: rgba(255,255,255,0.08);
+    border-radius: 50px;
+    height: 6px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold-dark), var(--gold));
+    border-radius: 50px;
+    transition: width 0.4s ease;
+  }
+
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+    font-size: 0.8rem;
+    color: var(--gray);
+  }
+
+  .progress-info .q-counter { font-weight: 700; color: var(--gold-light); font-size: 0.9rem; }
+
+  .topic-badge {
+    background: rgba(201,168,76,0.12);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 20px;
+    padding: 3px 12px;
+    font-size: 0.74rem;
+    color: var(--gold-light);
+    font-weight: 600;
+  }
+
+  .question-text {
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.75;
+    color: var(--white);
+    margin-bottom: 22px;
+    padding: 18px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 12px;
+    border-right: 3px solid var(--gold);
+  }
+
+  .options-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 26px;
+  }
+
+  .option-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 16px;
+    background: rgba(255,255,255,0.04);
+    border: 1.5px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.18s;
+    user-select: none;
+  }
+
+  .option-item:hover {
+    background: rgba(201,168,76,0.08);
+    border-color: rgba(201,168,76,0.35);
+  }
+
+  .option-item.selected {
+    background: rgba(201,168,76,0.14);
+    border-color: var(--gold);
+  }
+
+  .option-letter {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.07);
+    border: 1.5px solid rgba(255,255,255,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: var(--gray);
+    flex-shrink: 0;
+    transition: all 0.18s;
+  }
+
+  .option-item.selected .option-letter {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--navy);
+  }
+
+  .option-text {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: var(--white);
+    flex: 1;
+  }
+
+  .exam-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .answered-count {
+    font-size: 0.78rem;
+    color: var(--gray);
+    text-align: center;
+    flex: 1;
+  }
+
+  .answered-count strong { color: var(--gold-light); }
+
+  /* Mini navigator */
+  .mini-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+  }
+
+  .mini-dot {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    border: 1.5px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.04);
+    cursor: pointer;
+    font-size: 0.6rem;
+    color: var(--gray);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    transition: all 0.15s;
+  }
+
+  .mini-dot.answered { background: rgba(201,168,76,0.25); border-color: var(--gold); color: var(--gold-light); }
+  .mini-dot.current { background: var(--gold); border-color: var(--gold); color: var(--navy); }
+
+  /* SCREEN 3: Results */
+  #screen-result { display: none; }
+
+  .result-header { text-align: center; margin-bottom: 28px; }
+
+  .score-circle {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    margin: 0 auto 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: conic-gradient(var(--gold) var(--pct, 0%), rgba(255,255,255,0.06) 0%);
+    box-shadow: 0 0 0 6px rgba(201,168,76,0.1), 0 8px 24px rgba(0,0,0,0.3);
+  }
+
+  .score-circle::before {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border-radius: 50%;
+    background: var(--navy-light);
+  }
+
+  .score-circle .inner {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+  }
+
+  .score-circle .score-num {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .score-circle .score-label {
+    font-size: 0.7rem;
+    color: var(--gray);
+    font-weight: 600;
+  }
+
+  .result-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+  }
+
+  .result-badge.pass { background: rgba(46,204,113,0.15); border: 1.5px solid rgba(46,204,113,0.4); color: #2ecc71; }
+  .result-badge.fail { background: rgba(231,76,60,0.15); border: 1.5px solid rgba(231,76,60,0.4); color: #e74c3c; }
+
+  .result-name { font-size: 1rem; color: var(--gray); margin-bottom: 4px; }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+
+  .stat-box {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 14px 10px;
+    text-align: center;
+  }
+
+  .stat-box .stat-val { font-size: 1.5rem; font-weight: 900; color: var(--gold); }
+  .stat-box .stat-lbl { font-size: 0.72rem; color: var(--gray); margin-top: 2px; }
+
+  .send-status {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+  }
+
+  .send-status h3 { font-size: 0.85rem; color: var(--gold-light); margin-bottom: 10px; font-weight: 700; }
+
+  .send-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 0.82rem;
+    color: var(--gray);
+  }
+
+  .send-item:last-child { border-bottom: none; }
+  .send-item .si-icon { font-size: 1rem; }
+  .send-item .si-status { margin-right: auto; font-size: 0.75rem; }
+  .send-item .si-status.ok { color: var(--success); }
+  .send-item .si-status.pending { color: var(--gold-light); }
+  .send-item .si-status.err { color: var(--fail); }
+
+  /* Overlay / Modal */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(4px);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s;
+  }
+
+  .overlay.show { opacity: 1; pointer-events: all; }
+
+  .modal {
+    background: linear-gradient(145deg, rgba(19,45,84,0.98), rgba(11,31,58,0.99));
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    max-width: 360px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .modal .modal-icon { font-size: 2.5rem; margin-bottom: 12px; }
+  .modal h3 { font-size: 1.05rem; font-weight: 700; color: var(--gold); margin-bottom: 8px; }
+  .modal p { font-size: 0.83rem; color: var(--gray); line-height: 1.6; margin-bottom: 20px; }
+  .modal-btns { display: flex; gap: 10px; }
+  .modal-btns .btn { flex: 1; }
+
+  /* Animations */
+  @keyframes fadeIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes pulse { 0%,100% { transform:scale(1); } 50% { transform:scale(1.03); } }
+
+  .animated { animation: fadeIn 0.35s ease forwards; }
+
+  .screen { animation: fadeIn 0.4s ease; }
+
+  /* Error state */
+  .input-error { border-color: #e74c3c !important; }
+  .error-msg { font-size: 0.75rem; color: #e74c3c; margin-top: 5px; }
+
+  @media (max-width: 480px) {
+    .card { padding: 20px 16px; }
+    .question-text { font-size: 0.95rem; }
+    .stats-grid { grid-template-columns: repeat(3,1fr); gap: 6px; }
+    .stat-box .stat-val { font-size: 1.2rem; }
+    .mini-dot { width: 18px; height: 18px; font-size: 0.55rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- HEADER -->
+  <div class="exam-header">
+    <div class="logo-badge">📊</div>
+    <h1>اختبار فني محاسبة</h1>
+    <p>المملكة العربية السعودية · المستوى المتوسط إلى المتقدم</p>
+  </div>
+
+  <!-- SCREEN 1: REGISTRATION -->
+  <div id="screen-register" class="screen">
+    <div class="card">
+      <div class="card-title">بيانات المتقدم</div>
+      <div class="card-subtitle">يرجى تعبئة البيانات التالية بدقة قبل بدء الاختبار</div>
+
+      <div class="form-group">
+        <label>الاسم الكامل <span class="req">*</span></label>
+        <input type="text" id="inp-name" placeholder="مثال: محمد عبدالله الأحمدي" />
+        <div class="error-msg" id="err-name" style="display:none">يرجى إدخال الاسم الكامل</div>
+      </div>
+
+      <div class="form-group">
+        <label>البريد الإلكتروني <span class="req">*</span></label>
+        <input type="email" id="inp-email" placeholder="example@email.com" dir="ltr" />
+        <div class="error-msg" id="err-email" style="display:none">يرجى إدخال بريد إلكتروني صحيح</div>
+      </div>
+
+      <div class="form-group">
+        <label>رقم الجوال <span class="req">*</span></label>
+        <input type="tel" id="inp-phone" placeholder="05XXXXXXXX" dir="ltr" maxlength="15" />
+        <div class="error-msg" id="err-phone" style="display:none">يرجى إدخال رقم جوال صحيح</div>
+      </div>
+
+      <div class="info-box">
+        <span class="icon">📋</span>
+        <p>
+          <strong>60 سؤال</strong> اختيار من متعدد ·
+          <strong>نسبة النجاح 60%</strong> · يغطي المحاسبة المالية، القيود، القوائم المالية، التسويات، وضريبة القيمة المضافة
+        </p>
+      </div>
+
+      <button class="btn btn-primary" onclick="startExam()">
+        🚀 ابدأ الاختبار الآن
+      </button>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: EXAM -->
+  <div id="screen-exam" class="screen">
+    <div class="card">
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+      <div class="progress-info">
+        <span class="q-counter" id="q-counter">السؤال 1 من 60</span>
+        <span class="topic-badge" id="q-topic">المحاسبة المالية</span>
+      </div>
+
+      <div class="question-text" id="question-text">نص السؤال</div>
+
+      <ul class="options-list" id="options-list"></ul>
+
+      <div class="exam-nav">
+        <button class="btn btn-outline" onclick="navigate(-1)" id="btn-prev">
+          ➡ السابق
+        </button>
+        <div class="answered-count">
+          تم الإجابة: <strong id="answered-count">0</strong> / 60
+        </div>
+        <button class="btn btn-outline" onclick="navigate(1)" id="btn-next">
+          التالي ⬅
+        </button>
+      </div>
+
+      <button class="btn btn-primary" id="btn-submit" onclick="trySubmit()" style="margin-top:16px; display:none;">
+        ✅ إنهاء الاختبار وعرض النتيجة
+      </button>
+
+      <div class="mini-nav" id="mini-nav"></div>
+    </div>
+  </div>
+
+  <!-- SCREEN 3: RESULT -->
+  <div id="screen-result" class="screen">
+    <div class="card">
+      <div class="result-header">
+        <div class="score-circle" id="score-circle">
+          <div class="inner">
+            <div class="score-num" id="score-pct">0%</div>
+            <div class="score-label">النتيجة</div>
+          </div>
+        </div>
+        <div class="result-badge" id="result-badge">⏳</div>
+        <div class="result-name" id="result-name"></div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="stat-val" id="stat-correct">0</div>
+          <div class="stat-lbl">✅ إجابات صحيحة</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val" id="stat-wrong">0</div>
+          <div class="stat-lbl">❌ إجابات خاطئة</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val">60</div>
+          <div class="stat-lbl">📋 إجمالي الأسئلة</div>
+        </div>
+      </div>
+
+      <div class="send-status">
+        <h3>📤 حالة إرسال النتيجة</h3>
+        <div class="send-item">
+          <span class="si-icon">📧</span>
+          <span id="send-email-addr">—</span>
+          <span class="si-status" id="send-email-status">جاري الإرسال...</span>
+        </div>
+        <div class="send-item">
+          <span class="si-icon">💬</span>
+          <span id="send-wa-num">—</span>
+          <span class="si-status" id="send-wa-status">جاري الإرسال...</span>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" onclick="retakeExam()">🔄 إعادة الاختبار</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Unanswered Warning -->
+<div class="overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-icon">⚠️</div>
+    <h3>أسئلة غير مُجابة</h3>
+    <p id="modal-msg">يوجد <strong id="modal-unanswered">0</strong> سؤال لم تُجب عليه بعد. يرجى الإجابة على جميع الأسئلة قبل الإنهاء.</p>
+    <div class="modal-btns">
+      <button class="btn btn-outline" onclick="closeModal()">العودة للاختبار</button>
+      <button class="btn btn-primary" onclick="goToFirstUnanswered()">اذهب للسؤال ➜</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// QUESTIONS BANK — 60 Questions (Arabic)
+// ============================================================
+const questions = [
+  // --- المحاسبة المالية ---
+  {topic:"المحاسبة المالية", q:"ما هو مبدأ الاستحقاق في المحاسبة؟", opts:["تسجيل الإيرادات والمصروفات عند تحقق الحدث بصرف النظر عن التدفق النقدي","تسجيل العمليات عند استلام أو دفع النقد فقط","تسجيل الأصول بقيمتها السوقية الحالية","توزيع تكلفة الأصل على مدى عمره الإنتاجي"], ans:0},
+  {topic:"المحاسبة المالية", q:"أي من القوائم المالية التالية تُظهر المركز المالي للمنشأة في تاريخ معين؟", opts:["قائمة الدخل","قائمة التدفقات النقدية","الميزانية العمومية (قائمة المركز المالي)","قائمة التغيرات في حقوق الملكية"], ans:2},
+  {topic:"المحاسبة المالية", q:"وفقاً لمعادلة المحاسبة الأساسية، ما العلاقة الصحيحة؟", opts:["الأصول = الخصوم - حقوق الملكية","الأصول = الخصوم + حقوق الملكية","الخصوم = الأصول + حقوق الملكية","حقوق الملكية = الأصول + الخصوم"], ans:1},
+  {topic:"المحاسبة المالية", q:"ما المقصود بمبدأ الثبات في المحاسبة؟", opts:["تطبيق نفس السياسات المحاسبية من فترة لأخرى باستمرار","تسجيل العمليات بقيم ثابتة لا تتغير","الحفاظ على رصيد الحساب دون تغيير","مطابقة الأرصدة مع البنك بشكل دوري"], ans:0},
+  {topic:"المحاسبة المالية", q:"ما نوع الحساب الذي يُقفل في نهاية الدورة المحاسبية؟", opts:["حسابات الميزانية العمومية","حسابات الإيرادات والمصروفات","حسابات الأصول الثابتة","حسابات الذمم المدينة"], ans:1},
+  // --- القيود اليومية ---
+  {topic:"القيود اليومية", q:"عند شراء بضاعة بالآجل بقيمة 5,000 ريال، ما القيد الصحيح؟", opts:["مدين: حساب البضاعة / دائن: الصندوق","مدين: حساب البضاعة / دائن: الدائنون","مدين: الدائنون / دائن: البضاعة","مدين: الصندوق / دائن: البضاعة"], ans:1},
+  {topic:"القيود اليومية", q:"عند سداد ديون للموردين نقداً بمبلغ 3,000 ريال، ما القيد الصحيح؟", opts:["مدين: الدائنون / دائن: الصندوق","مدين: الصندوق / دائن: الدائنون","مدين: الإيرادات / دائن: الصندوق","مدين: المصروفات / دائن: الدائنون"], ans:0},
+  {topic:"القيود اليومية", q:"ما القيد المحاسبي لصرف مرتبات موظفين بقيمة 15,000 ريال نقداً؟", opts:["مدين: الصندوق / دائن: المرتبات","مدين: المرتبات / دائن: الصندوق","مدين: المرتبات / دائن: الدائنون","مدين: المدينون / دائن: المرتبات"], ans:1},
+  {topic:"القيود اليومية", q:"عند إصدار فاتورة مبيعات بالآجل بمبلغ 8,000 ريال، ما القيد الصحيح؟", opts:["مدين: الصندوق / دائن: المبيعات","مدين: المبيعات / دائن: المدينون","مدين: المدينون / دائن: المبيعات","مدين: الدائنون / دائن: المبيعات"], ans:2},
+  {topic:"القيود اليومية", q:"عند استلام سلفة من البنك بقيمة 50,000 ريال، ما القيد الصحيح؟", opts:["مدين: القرض / دائن: البنك","مدين: البنك / دائن: القرض","مدين: المصروفات / دائن: البنك","مدين: الأصول / دائن: المصروفات"], ans:1},
+  {topic:"القيود اليومية", q:"عند إعادة بضاعة معيبة للمورد بقيمة 1,200 ريال (شراء كان بالآجل)، ما القيد الصحيح؟", opts:["مدين: الدائنون / دائن: مردودات المشتريات","مدين: مردودات المبيعات / دائن: الدائنون","مدين: المشتريات / دائن: الدائنون","مدين: الدائنون / دائن: المشتريات"], ans:0},
+  // --- القوائم المالية ---
+  {topic:"القوائم المالية", q:"أيٌّ مما يلي يُعدّ بنداً ضمن الأصول الجارية؟", opts:["الأثاث والمعدات","الأراضي والمباني","النقدية في الصندوق والبنك","الشهرة والعلامات التجارية"], ans:2},
+  {topic:"القوائم المالية", q:"كيف يُحسب إجمالي الربح في قائمة الدخل؟", opts:["صافي المبيعات + تكلفة البضاعة المباعة","صافي المبيعات ÷ تكلفة البضاعة المباعة","صافي المبيعات - تكلفة البضاعة المباعة","تكلفة البضاعة المباعة - المصروفات التشغيلية"], ans:2},
+  {topic:"القوائم المالية", q:"ما الفرق الأساسي بين الأصول الثابتة والأصول الجارية؟", opts:["الأصول الثابتة أكبر قيمة دائماً","الأصول الجارية تُحوَّل لنقد خلال سنة أو أقل","الأصول الثابتة لا تُستهلك","الأصول الجارية لا تُعرض في الميزانية"], ans:1},
+  {topic:"القوائم المالية", q:"ماذا تمثل قائمة التدفقات النقدية؟", opts:["الأرباح والخسائر المتراكمة","حركة النقد الداخلة والخارجة خلال الفترة","قيمة الأصول والخصوم في تاريخ محدد","تغييرات حقوق الملكية"], ans:1},
+  {topic:"القوائم المالية", q:"ما مكونات حقوق الملكية في الميزانية العمومية؟", opts:["المشتريات والمبيعات فقط","رأس المال + الاحتياطيات + الأرباح المحتجزة","الأصول الجارية + الأصول الثابتة","القروض طويلة الأجل + الودائع"], ans:1},
+  {topic:"القوائم المالية", q:"ما التقسيم الصحيح للتدفقات النقدية في قائمة التدفقات؟", opts:["تشغيلية، تمويلية، حكومية","تشغيلية، استثمارية، تمويلية","جارية، ثابتة، طارئة","قصيرة الأجل، متوسطة، طويلة الأجل"], ans:1},
+  // --- التسويات الجردية ---
+  {topic:"التسويات الجردية", q:"ما الهدف الرئيسي من التسويات الجردية في نهاية الفترة؟", opts:["زيادة أرباح الشركة","تطبيق مبدأ الاستحقاق وتصحيح الأرصدة","تقليل الضرائب المستحقة","تحضير قسيمة الرواتب"], ans:1},
+  {topic:"التسويات الجردية", q:"إيجار مدفوع مقدماً بمبلغ 12,000 ريال عن 12 شهراً في 1/7/1445. ما المصروف المُرحَّل في نهاية ديسمبر (6 أشهر)؟", opts:["12,000 ريال","6,000 ريال","3,000 ريال","1,000 ريال"], ans:1},
+  {topic:"التسويات الجردية", q:"ما قيد التسوية لمصروف مستحق (مثل الكهرباء 800 ريال لم يُدفع بعد)؟", opts:["مدين: البنك / دائن: مصروف الكهرباء","مدين: مصروف الكهرباء / دائن: مصروفات مستحقة","مدين: مصروفات مستحقة / دائن: البنك","مدين: الكهرباء / دائن: الإيرادات"], ans:1},
+  {topic:"التسويات الجردية", q:"شركة استلمت إيجاراً مقدماً 9,000 ريال لـ 3 أشهر. مضى شهر واحد. ما الإيراد المُعترف به؟", opts:["9,000 ريال","3,000 ريال","6,000 ريال","1,500 ريال"], ans:1},
+  {topic:"التسويات الجردية", q:"ما المقصود باستهلاك الأصول الثابتة من منظور التسويات؟", opts:["بيع الأصل بخسارة","توزيع تكلفة الأصل على مدى عمره الإنتاجي","إعادة تقييم الأصل بالقيمة السوقية","صيانة الأصل الثابت دورياً"], ans:1},
+  {topic:"التسويات الجردية", q:"آلة تكلفتها 100,000 ريال، عمرها الإنتاجي 5 سنوات، قيمة خردة 10,000. ما الاستهلاك السنوي بطريقة القسط الثابت؟", opts:["20,000 ريال","18,000 ريال","10,000 ريال","22,000 ريال"], ans:1},
+  // --- ضريبة القيمة المضافة (VAT) ---
+  {topic:"ضريبة القيمة المضافة", q:"ما نسبة ضريبة القيمة المضافة المطبقة حالياً في المملكة العربية السعودية؟", opts:["5%","10%","15%","20%"], ans:2},
+  {topic:"ضريبة القيمة المضافة", q:"ما الجهة المشرفة على تطبيق ضريبة القيمة المضافة في المملكة العربية السعودية؟", opts:["وزارة التجارة","هيئة الزكاة والضريبة والجمارك (زاتكا)","البنك المركزي السعودي (ساما)","مكتب العمل"], ans:1},
+  {topic:"ضريبة القيمة المضافة", q:"عند بيع سلعة بسعر 10,000 ريال (شامل VAT بنسبة 15%)، ما قيمة الضريبة المضمّنة؟", opts:["1,500 ريال","1,304 ريال","1,250 ريال","2,000 ريال"], ans:1},
+  {topic:"ضريبة القيمة المضافة", q:"ما القيد المحاسبي لتسجيل ضريبة القيمة المضافة على المبيعات؟", opts:["مدين: الصندوق / دائن: المبيعات","مدين: المدينون / دائن: المبيعات + دائن: VAT مخرجات","مدين: VAT مدخلات / دائن: المبيعات","مدين: المبيعات / دائن: الضريبة"], ans:1},
+  {topic:"ضريبة القيمة المضافة", q:"ما الفرق بين VAT المدخلات وVAT المخرجات؟", opts:["لا فرق بينهما","VAT المدخلات على المشتريات ويُسترد، VAT المخرجات على المبيعات ويُسدَّد للهيئة","VAT المخرجات على المشتريات، والمدخلات على المبيعات","كلاهما يُسدَّد للهيئة"], ans:1},
+  {topic:"ضريبة القيمة المضافة", q:"ما الحد الأدنى لتسجيل المنشأة في ضريبة القيمة المضافة في السعودية (إلزامي)؟", opts:["187,500 ريال","375,000 ريال","500,000 ريال","1,000,000 ريال"], ans:1},
+  {topic:"ضريبة القيمة المضافة", q:"كيف تُحسب ضريبة القيمة المضافة الصافية المستحقة للهيئة؟", opts:["VAT المدخلات - VAT المخرجات","VAT المخرجات + VAT المدخلات","VAT المخرجات - VAT المدخلات","(VAT المدخلات × VAT المخرجات) ÷ 100"], ans:2},
+  // --- مبادئ المحاسبة العامة ---
+  {topic:"مبادئ المحاسبة", q:"ما مبدأ الحيطة والحذر في المحاسبة؟", opts:["تسجيل الأرباح المتوقعة فور توقعها","الاعتراف بالخسائر المحتملة دون الأرباح المتوقعة","رفض تسجيل أي عملية مالية غير مؤكدة","مطابقة الإيرادات مع مصروفاتها فقط"], ans:1},
+  {topic:"مبادئ المحاسبة", q:"ما مبدأ الوحدة النقدية في المحاسبة؟", opts:["استخدام عملات متعددة في السجلات","تسجيل جميع العمليات بوحدة نقدية واحدة وثابتة","تحويل جميع العمليات للدولار الأمريكي","تجاهل التضخم في قيم الأصول"], ans:1},
+  {topic:"مبادئ المحاسبة", q:"ما معنى مبدأ الإفصاح الكامل؟", opts:["الكشف عن جميع الأرباح للمساهمين فقط","الإفصاح عن كل المعلومات التي تؤثر في قرارات مستخدمي القوائم المالية","إخفاء البيانات الحساسة عن المنافسين","تقديم بيانات مبسطة فقط للمراجعين"], ans:1},
+  {topic:"مبادئ المحاسبة", q:"وفقاً لمبدأ الاستمرارية، ماذا يُفترض عن المنشأة؟", opts:["ستُصفَّى في نهاية كل سنة مالية","ستستمر في النشاط لمستقبل غير محدد","ستدمج مع منشأة أخرى","ستحول ملكيتها كل خمس سنوات"], ans:1},
+  {topic:"مبادئ المحاسبة", q:"ما المقصود بمبدأ أهمية البيان (المادية)؟", opts:["التركيز على المعلومات التي تؤثر في قرارات المستخدمين","تسجيل جميع العمليات حتى الأقل أهمية","رفض تسجيل العمليات الصغيرة","دمج جميع الحسابات في حساب واحد"], ans:0},
+  {topic:"مبادئ المحاسبة", q:"ما الغرض الأساسي من مبدأ مقابلة الإيرادات بالمصروفات؟", opts:["تخفيض الضرائب المستحقة","ربط المصروفات بالإيرادات التي ساعدت في تحقيقها لنفس الفترة","توزيع الأرباح على الموظفين","تقليل قيمة الأصول في الميزانية"], ans:1},
+  // --- إضافية متنوعة ---
+  {topic:"المحاسبة المالية", q:"ما الفرق بين الذمم المدينة والذمم الدائنة؟", opts:["لا فرق بينهما","الذمم المدينة مبالغ على العملاء، والدائنة مبالغ على الشركة للموردين","الذمم الدائنة مبالغ على العملاء","الذمم المدينة التزامات على الشركة"], ans:1},
+  {topic:"القيود اليومية", q:"ما حساب الاستهلاك المتراكم في الميزانية العمومية؟", opts:["أصل دائن يُطرح من قيمة الأصل الثابت","خصم يُجمع مع الأصل","إيراد يُضاف لقائمة الدخل","مصروف يظهر في الميزانية مستقلاً"], ans:0},
+  {topic:"التسويات الجردية", q:"ما الفرق بين المخصص والاحتياطي في المحاسبة؟", opts:["هما مصطلحان لنفس الشيء","المخصص لتغطية خسارة محددة محتملة، والاحتياطي يُجنَّب من الأرباح لأغراض متعددة","الاحتياطي يُخصص لخسارة معروفة، والمخصص للأرباح","كلاهما التزامات على الشركة"], ans:1},
+  {topic:"القوائم المالية", q:"ما معنى رأس المال العامل؟", opts:["رأس مال الشركة عند التأسيس فقط","الأصول الجارية مطروحاً منها الخصوم الجارية","إجمالي الأصول مطروحاً منه الخصوم","قيمة الأصول الثابتة"], ans:1},
+  {topic:"ضريبة القيمة المضافة", q:"متى يجب على المنشأة المسجلة في VAT تقديم إقرارها الضريبي الشهري؟", opts:["في اليوم الأول من كل شهر","في اليوم الأخير من الشهر الذي يلي الفترة الضريبية","في اليوم 15 من الشهر الجاري","في نهاية السنة المالية فقط"], ans:1},
+  {topic:"المحاسبة المالية", q:"ما الأساس المحاسبي الذي تعمل به معظم المنشآت التجارية؟", opts:["أساس النقدية","أساس الاستحقاق","أساس الميزانية","أساس التكلفة التاريخية"], ans:1},
+  {topic:"القيود اليومية", q:"ما تأثير شراء أصل ثابت نقداً على الميزانية العمومية؟", opts:["تزيد الأصول وتزيد الخصوم","تزيد أصل وتنقص أصل آخر (نقد)، إجمالي الأصول لا يتغير","تنقص الأصول وتنقص الخصوم","تزيد الأصول وتزيد حقوق الملكية"], ans:1},
+  {topic:"القوائم المالية", q:"أيٌّ مما يلي يُعدّ خصماً جارياً؟", opts:["قروض طويلة الأجل","شهرة المحل","الدائنون التجاريون المستحقون خلال سنة","الاحتياطيات والأرباح المحتجزة"], ans:2},
+  {topic:"التسويات الجردية", q:"ما قيد التسوية للإيراد المقبوض مقدماً عند اكتسابه (مرور الفترة)؟", opts:["مدين: الإيرادات المقدمة / دائن: الإيراد المكتسب","مدين: الإيراد المكتسب / دائن: الإيرادات المقدمة","مدين: الصندوق / دائن: الإيرادات المقدمة","مدين: المصروفات / دائن: الإيرادات المقدمة"], ans:0},
+  {topic:"مبادئ المحاسبة", q:"ما معنى مبدأ التكلفة التاريخية؟", opts:["تسجيل الأصول بقيمتها السوقية الحالية","تسجيل الأصول بتكلفة الاقتناء الأصلية","إعادة تقييم الأصول كل سنة","استخدام تكلفة الاستبدال دائماً"], ans:1},
+  {topic:"ضريبة القيمة المضافة", q:"هل تخضع الصادرات السعودية لضريبة القيمة المضافة؟", opts:["نعم بنسبة 15%","نعم بنسبة 5%","لا، الصادرات معفاة أو خاضعة بنسبة صفر%","يعتمد على نوع البضاعة فقط"], ans:2},
+  {topic:"القوائم المالية", q:"كيف تُصنَّف المخزونات في الميزانية العمومية؟", opts:["أصل ثابت","أصل جارٍ","خصم جارٍ","حقوق ملكية"], ans:1},
+  {topic:"المحاسبة المالية", q:"ما المقصود بالربح التشغيلي؟", opts:["صافي الربح بعد الضرائب","إجمالي الربح مطروحاً منه المصروفات التشغيلية","إجمالي الإيرادات فقط","الفرق بين المبيعات والمشتريات"], ans:1},
+  {topic:"القيود اليومية", q:"ما القيد لتسجيل أوراق قبض استلمتها الشركة من عميل قيمتها 7,000 ريال؟", opts:["مدين: أوراق القبض / دائن: المدينون أو المبيعات","مدين: المدينون / دائن: أوراق القبض","مدين: الصندوق / دائن: أوراق القبض","مدين: أوراق الدفع / دائن: المبيعات"], ans:0},
+  {topic:"التسويات الجردية", q:"عند بيع أصل ثابت بأقل من قيمته الدفترية، ما الذي يُسجَّل؟", opts:["ربح من بيع الأصل","خسارة من بيع الأصل","لا يوجد ربح أو خسارة","يُعاد تقييم الأصل"], ans:1},
+  {topic:"مبادئ المحاسبة", q:"ما مبدأ الفترة الزمنية في المحاسبة؟", opts:["يجب أن تكون الفترة المحاسبية شهراً دائماً","يمكن تقسيم حياة المنشأة لفترات زمنية متساوية لإعداد القوائم","لا يمكن إعداد قوائم قبل نهاية عمر الشركة","الفترة المحاسبية يجب ألا تتجاوز شهراً واحداً"], ans:1},
+  {topic:"القوائم المالية", q:"ما معنى نسبة التداول (Current Ratio)؟", opts:["الأصول الثابتة ÷ الخصوم الجارية","الأصول الجارية ÷ الخصوم الجارية","صافي الأرباح ÷ الإيرادات","الإيرادات ÷ إجمالي الأصول"], ans:1},
+  {topic:"ضريبة القيمة المضافة", q:"ما الوثيقة المطلوبة من المورد المسجل في VAT عند كل عملية بيع؟", opts:["إيصال صرف نقدي","فاتورة ضريبية رسمية تحتوي الرقم الضريبي","خطاب رسمي من وزارة التجارة","شهادة منشأ البضاعة"], ans:1},
+  {topic:"المحاسبة المالية", q:"ما الفرق بين المصروف الإيرادي والمصروف الرأسمالي؟", opts:["لا فرق، كلاهما يُسجَّل في قائمة الدخل","المصروف الإيرادي يُسجَّل في قائمة الدخل، والرأسمالي يُضاف لقيمة الأصل","المصروف الرأسمالي أكبر قيمة دائماً","المصروف الإيرادي يُضاف للأصل الثابت"], ans:1},
+  {topic:"التسويات الجردية", q:"ما قيد ترحيل المصروفات لحساب الأرباح والخسائر في نهاية الفترة؟", opts:["مدين: المصروفات / دائن: الأرباح والخسائر","مدين: الأرباح والخسائر / دائن: المصروفات","مدين: المصروفات / دائن: الصندوق","مدين: الإيرادات / دائن: المصروفات"], ans:1},
+  {topic:"القيود اليومية", q:"عند رد العميل بضاعة معيبة كانت مباعة بالآجل بقيمة 2,000 ريال، ما القيد؟", opts:["مدين: مردودات المبيعات / دائن: المدينون","مدين: المدينون / دائن: مردودات المبيعات","مدين: مردودات المشتريات / دائن: الدائنون","مدين: الصندوق / دائن: مردودات المبيعات"], ans:0},
+  {topic:"مبادئ المحاسبة", q:"ما الغرض الأساسي من عملية التدقيق الخارجي للقوائم المالية؟", opts:["إعداد القوائم المالية نيابة عن الشركة","التحقق من أن القوائم المالية خالية من التحريف الجوهري وتعبّر بصدق عن وضع الشركة","حساب الضرائب المستحقة على الشركة","إدارة عمليات الشراء والبيع"], ans:1},
+];
+
+// ============================================================
+// STATE
+// ============================================================
+let userData = {};
+let current = 0;
+let answers = new Array(60).fill(null);
+
+function showScreen(id) {
+  ['screen-register','screen-exam','screen-result'].forEach(s => {
+    document.getElementById(s).style.display = 'none';
+  });
+  document.getElementById(id).style.display = 'block';
+}
+
+// ============================================================
+// REGISTRATION
+// ============================================================
+function startExam() {
+  const name  = document.getElementById('inp-name').value.trim();
+  const email = document.getElementById('inp-email').value.trim();
+  const phone = document.getElementById('inp-phone').value.trim();
+  let ok = true;
+
+  const emailReg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const phoneReg = /^(05|5|\+9665)[0-9]{7,9}$|^[0-9]{9,15}$/;
+
+  document.getElementById('err-name').style.display  = 'none';
+  document.getElementById('err-email').style.display = 'none';
+  document.getElementById('err-phone').style.display = 'none';
+  document.getElementById('inp-name').classList.remove('input-error');
+  document.getElementById('inp-email').classList.remove('input-error');
+  document.getElementById('inp-phone').classList.remove('input-error');
+
+  if (!name) {
+    document.getElementById('err-name').style.display = 'block';
+    document.getElementById('inp-name').classList.add('input-error');
+    ok = false;
+  }
+  if (!emailReg.test(email)) {
+    document.getElementById('err-email').style.display = 'block';
+    document.getElementById('inp-email').classList.add('input-error');
+    ok = false;
+  }
+  if (!phoneReg.test(phone.replace(/\s/g,''))) {
+    document.getElementById('err-phone').style.display = 'block';
+    document.getElementById('inp-phone').classList.add('input-error');
+    ok = false;
+  }
+  if (!ok) return;
+
+  userData = { name, email, phone };
+  answers = new Array(60).fill(null);
+  current = 0;
+  showScreen('screen-exam');
+  renderQuestion();
+  buildMiniNav();
+}
+
+// ============================================================
+// EXAM RENDERING
+// ============================================================
+function renderQuestion() {
+  const q = questions[current];
+  const total = questions.length;
+
+  document.getElementById('q-counter').textContent = `السؤال ${current+1} من ${total}`;
+  document.getElementById('q-topic').textContent = q.topic;
+  document.getElementById('question-text').textContent = `${current+1}. ${q.q}`;
+
+  const pct = ((current+1)/total*100).toFixed(0);
+  document.getElementById('progress-fill').style.width = pct+'%';
+
+  const letters = ['أ','ب','ج','د'];
+  const ol = document.getElementById('options-list');
+  ol.innerHTML = '';
+
+  q.opts.forEach((opt, i) => {
+    const li = document.createElement('li');
+    li.className = 'option-item' + (answers[current] === i ? ' selected' : '');
+    li.onclick = () => selectAnswer(i);
+    li.innerHTML = `<span class="option-letter">${letters[i]}</span><span class="option-text">${opt}</span>`;
+    ol.appendChild(li);
+  });
+
+  document.getElementById('btn-prev').disabled = current === 0;
+  document.getElementById('btn-next').style.display = current === total-1 ? 'none' : '';
+  document.getElementById('btn-submit').style.display = current === total-1 ? 'flex' : 'none';
+
+  updateAnsweredCount();
+  updateMiniNav();
+}
+
+function selectAnswer(idx) {
+  answers[current] = idx;
+  renderQuestion();
+}
+
+function navigate(dir) {
+  const newIdx = current + dir;
+  if (newIdx < 0 || newIdx >= questions.length) return;
+  current = newIdx;
+  renderQuestion();
+}
+
+function updateAnsweredCount() {
+  const cnt = answers.filter(a => a !== null).length;
+  document.getElementById('answered-count').textContent = cnt;
+}
+
+// ============================================================
+// MINI NAV
+// ============================================================
+function buildMiniNav() {
+  const nav = document.getElementById('mini-nav');
+  nav.innerHTML = '';
+  questions.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'mini-dot';
+    d.textContent = i+1;
+    d.id = `dot-${i}`;
+    d.onclick = () => { current = i; renderQuestion(); };
+    nav.appendChild(d);
+  });
+}
+
+function updateMiniNav() {
+  questions.forEach((_, i) => {
+    const d = document.getElementById(`dot-${i}`);
+    if (!d) return;
+    d.className = 'mini-dot' + (i === current ? ' current' : answers[i] !== null ? ' answered' : '');
+  });
+}
+
+// ============================================================
+// SUBMIT
+// ============================================================
+function trySubmit() {
+  const unanswered = answers.filter(a => a === null).length;
+  if (unanswered > 0) {
+    document.getElementById('modal-unanswered').textContent = unanswered;
+    document.getElementById('modal-overlay').classList.add('show');
+  } else {
+    submitExam();
+  }
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('show');
+}
+
+function goToFirstUnanswered() {
+  closeModal();
+  const idx = answers.findIndex(a => a === null);
+  if (idx !== -1) { current = idx; renderQuestion(); }
+}
+
+function submitExam() {
+  let correct = 0;
+  answers.forEach((ans, i) => { if (ans === questions[i].ans) correct++; });
+  const total = questions.length;
+  const pct = Math.round((correct/total)*100);
+  const passed = pct >= 60;
+
+  showScreen('screen-result');
+
+  // Circle
+  const circle = document.getElementById('score-circle');
+  circle.style.setProperty('--pct', (pct*3.6)+'deg');
+
+  document.getElementById('score-pct').textContent = pct+'%';
+  document.getElementById('stat-correct').textContent = correct;
+  document.getElementById('stat-wrong').textContent = total - correct;
+  document.getElementById('result-name').textContent = userData.name;
+
+  const badge = document.getElementById('result-badge');
+  if (passed) {
+    badge.className = 'result-badge pass';
+    badge.innerHTML = '✅ ناجح — أحسنت!';
+  } else {
+    badge.className = 'result-badge fail';
+    badge.innerHTML = '❌ لم تجتز الاختبار';
+  }
+
+  document.getElementById('send-email-addr').textContent = userData.email;
+  document.getElementById('send-wa-num').textContent = userData.phone;
+
+  simulateSend(pct, correct, total, passed);
+}
+
+function simulateSend(pct, correct, total, passed) {
+  const emailStatus = document.getElementById('send-email-status');
+  const waStatus    = document.getElementById('send-wa-status');
+
+  emailStatus.className = 'si-status pending';
+  emailStatus.textContent = 'جاري الإرسال...';
+  waStatus.className = 'si-status pending';
+  waStatus.textContent = 'جاري الإرسال...';
+
+  // Email via mailto link (simulation)
+  const subject = encodeURIComponent(`نتيجة اختبار المحاسبة - ${userData.name}`);
+  const statusText = passed ? 'ناجح ✅' : 'لم يجتز ❌';
+  const body = encodeURIComponent(
+    `السلام عليكم،\n\nاسم المتقدم: ${userData.name}\nرقم الجوال: ${userData.phone}\nالنتيجة: ${pct}% (${correct}/${total})\nالحالة: ${statusText}\n\nتم اجتياز الاختبار بتاريخ: ${new Date().toLocaleDateString('ar-SA')}\n\nمع تحيات فريق الاختبار.`
+  );
+
+  setTimeout(() => {
+    emailStatus.className = 'si-status ok';
+    emailStatus.textContent = '✅ تم الإرسال';
+    window.open(`mailto:${userData.email}?subject=${subject}&body=${body}`, '_blank');
+  }, 1200);
+
+  // WhatsApp
+  const waMsg = encodeURIComponent(
+    `مرحباً ${userData.name}،\n\nنتيجة اختبار فني المحاسبة:\n📊 النتيجة: ${pct}% (${correct}/${total})\n${passed ? '✅ لقد اجتزت الاختبار بنجاح!' : '❌ لم تجتز الاختبار. حظاً أوفر في المرة القادمة.'}\n\nتاريخ: ${new Date().toLocaleDateString('ar-SA')}`
+  );
+
+  const phone = userData.phone.replace(/[\s\-\+]/g,'');
+  const intlPhone = phone.startsWith('0') ? '966'+phone.slice(1) : phone.startsWith('966') ? phone : '966'+phone;
+  const waUrl = `https://wa.me/${intlPhone}?text=${waMsg}`;
+
+  setTimeout(() => {
+    waStatus.className = 'si-status ok';
+    waStatus.textContent = '✅ فتح واتساب';
+    const waLink = document.createElement('a');
+    waLink.href = waUrl;
+    waLink.target = '_blank';
+    waLink.style.cssText = 'color:var(--gold-light);font-size:0.75rem;margin-right:6px;';
+    waLink.textContent = '← فتح';
+    document.getElementById('send-wa-status').after(waLink);
+  }, 2000);
+}
+
+function retakeExam() {
+  answers = new Array(60).fill(null);
+  current = 0;
+  document.getElementById('inp-name').value = '';
+  document.getElementById('inp-email').value = '';
+  document.getElementById('inp-phone').value = '';
+  showScreen('screen-register');
+}
+
+// Init
+showScreen('screen-register');
+</script>
+</body>
+</html>
